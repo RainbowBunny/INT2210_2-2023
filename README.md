@@ -1,0 +1,1 @@
+Please install algs4.jar and algs4-data folder before running the command in the scripts.txt file.

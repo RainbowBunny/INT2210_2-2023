@@ -1,0 +1,5 @@
+javac -cp ".;../../algs4.jar" PercolationVisualizer.java
+java -cp ".;../../algs4.jar" PercolationVisualizer inputFile
+
+javac -cp ".;../../algs4.jar" PercolationStats.java
+java -cp ".;../../algs4.jar" PercolationStats.java

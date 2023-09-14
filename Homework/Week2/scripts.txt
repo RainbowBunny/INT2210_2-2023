@@ -1,0 +1,11 @@
+javac -cp ".;../../algs4.jar" UFClient1.java
+java -cp ".;../../algs4.jar" UFClient1 < ../../algs4-data/tinyUF.txt
+
+javac -cp ".;../../algs4.jar" UFClient2.java
+java -cp ".;../../algs4.jar" UFClient2
+
+javac -cp ".;../../algs4.jar" Sum2.java
+java -cp ".;../../algs4.jar" Sum2.java ../../algs4-data/4Kints.txt
+
+javac -cp ".;../../algs4.jar" Sum3.java
+java -cp ".;../../algs4.jar" Sum3.java ../../algs4-data/4Kints.txt
