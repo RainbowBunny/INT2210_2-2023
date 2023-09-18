@@ -1,4 +1,5 @@
 import java.util.Iterator;
+
 import edu.princeton.cs.algs4.StdOut;
 
 public class Deque<Item> implements Iterable<Item> {
@@ -77,9 +78,9 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         Node node = new Node(item);
-        node.prev = tail;
-        tail.next = node;
-        tail = node;
+        node.next = head;
+        head.prev = node;
+        head = node;
     }
 
     // add the item to the back
@@ -94,9 +95,9 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         Node node = new Node(item);
-        node.next = head;
-        head.prev = node;
-        head = node;
+        node.prev = tail;
+        tail.next = node;
+        tail = node;
     }
 
     // remove and return the item from the front
@@ -104,8 +105,9 @@ public class Deque<Item> implements Iterable<Item> {
         if (size() == 0) {
             throw new java.util.NoSuchElementException();
         }
+        currentSize--;
         Item res = head.item;
-        if (size() == 1) {
+        if (size() == 0) {
             head = null;
             tail = null;
         } else {
@@ -120,13 +122,14 @@ public class Deque<Item> implements Iterable<Item> {
         if (size() == 0) {
             throw new java.util.NoSuchElementException();
         }
+        currentSize--;
         Item res = tail.item;
-        if (size() == 1) {
+        if (size() == 0) {
             head = null;
             tail = null;
         } else {
             tail.prev.next = null;
-            tail.prev = tail;
+            tail = tail.prev;
         }
         return res;
     }
@@ -138,16 +141,27 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        Deque <Integer> deque = new Deque<Integer>();
+        Deque<Integer> deque = new Deque<Integer>();
         deque.addFirst(1);
         deque.addLast(2);
         deque.addFirst(3);
         deque.addLast(4);
+        
         StdOut.println("Current size: " + deque.size());
         StdOut.println("Remove First: " + deque.removeFirst());
         StdOut.println("Remove Last: " + deque.removeLast());
-        Iterator <Integer> cIterator = deque.iterator();
+        Iterator<Integer> cIterator = deque.iterator();
         StdOut.println("Is last item? " + cIterator.hasNext());
         StdOut.println("Next item: " + cIterator.next());
+
+        for (Integer i : deque) {
+            StdOut.println(i);
+        }
+
+        deque.addLast(5);
+        StdOut.println(deque.size());
+        for (Integer i : deque) {
+            StdOut.println(i);
+        }
     }
 }

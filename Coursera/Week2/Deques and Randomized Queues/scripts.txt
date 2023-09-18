@@ -1,2 +1,12 @@
-javac -cp ".;../../algs4.jar" Deque.java
-java -cp ".;../../algs4.jar" Deque
+javac -cp ".;../../../algs4.jar" Deque.java
+java -cp ".;../../../algs4.jar" Deque
+
+javac -Xlint:unchecked -cp ".;../../../algs4.jar" RandomizedQueue.java
+java -cp ".;../../../algs4.jar" RandomizedQueue
+
+javac -cp ".;../../../algs4.jar" Permutation.java
+cat Data/distinct.txt
+java -cp ".;../../../algs4.jar" Permutation 3 < Data/distinct.txt
+java -cp ".;../../../algs4.jar" Permutation 3 < Data/distinct.txt
+cat Data/duplicates.txt
+java ".;../../../algs4.jar" Permutation 8 < Data/duplicates.txt

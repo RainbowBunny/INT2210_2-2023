@@ -1,0 +1,5 @@
+javac -cp ".;../../../algs4.jar" BruteCollinearPoints.java
+java -cp ".;../../../algs4.jar" BruteCollinearPoints Data/input8.txt
+
+javac -cp ".;../../../algs4.jar" FastCollinearPoints.java
+java -cp ".;../../../algs4.jar" FastCollinearPoints Data/input8.txt
