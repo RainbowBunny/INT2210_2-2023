@@ -1,0 +1,2 @@
+javac -cp ".;../../algs4.jar" Sum3.java
+java -cp ".;../../algs4.jar" Sum3.java ../../algs4-data/4Kints.txt
