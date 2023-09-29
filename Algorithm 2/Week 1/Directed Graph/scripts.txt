@@ -1,0 +1,9 @@
+javac -cp ".;../../../algs4.jar" WordNet.java
+java -cp ".;../../../algs4.jar" WordNet.java Data/synsets.txt Data/hypernyms.txt
+java -cp ".;../../../algs4.jar" WordNet Data/synsets500-subgraph.txt Data/hypernyms500-subgraph.txt
+
+javac -cp ".;../../../algs4.jar" SAP.java
+java -cp ".;../../../algs4.jar" SAP Data/digraph1.txt
+
+javac -cp ".;../../../algs4.jar" Outcast.java
+java -cp ".;../../../algs4.jar" Outcast Data/synsets.txt Data/hypernyms.txt Data/outcast5.txt Data/outcast8.txt Data/outcast11.txt

@@ -1,0 +1,5 @@
+javac -cp ".;../../../algs4.jar" Board.java
+java -cp ".;../../../algs4.jar" Board
+
+javac -cp ".;../../../algs4.jar" Solver.java
+java -cp ".;../../../algs4.jar" Solver Data/puzzle01.txt
