@@ -1,0 +1,8 @@
+javac -cp ".;../../../algs4.jar" NearestNeighborVisualizer.java
+java -cp ".;../../../algs4.jar" NearestNeighborVisualizer Data/circle10.txt
+
+javac -cp ".;../../../algs4.jar" KdTreeVisualizer.java
+java -cp ".;../../../algs4.jar" KdTreeVisualizer
+
+javac -cp ".;../../../algs4.jar" RangeSearchVisualizer.java
+java -cp ".;../../../algs4.jar" RangeSearchVisualizer Data/circle10.txt
