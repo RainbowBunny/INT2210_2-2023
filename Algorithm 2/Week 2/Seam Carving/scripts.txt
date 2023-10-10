@@ -1,0 +1,5 @@
+javac -cp ".;../../../algs4.jar" PrintSeams.java
+java -cp ".;../../../algs4.jar" PrintSeams Data/3x4.png
+
+javac -cp ".;../../../algs4.jar" ResizeDemo.java
+java -cp ".;../../../algs4.jar" ResizeDemo Data/3x4.png 1 1
