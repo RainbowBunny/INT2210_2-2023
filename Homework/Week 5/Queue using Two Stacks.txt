@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    private static int[] queue;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        queue = new int[100005];
+        int size = 0, top = 0;
+        int q;
+        q = scanner.nextInt();
+        while (q-- > 0) {
+            int type;
+            type = scanner.nextInt();
+            if (type == 1) {
+                queue[size++] = scanner.nextInt();
+            } else if (type == 2) {
+                top++;
+            } else {
+                System.out.println(queue[top]);
+            }
+        }
+    }
+}

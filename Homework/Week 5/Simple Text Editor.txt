@@ -1,0 +1,99 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    static class FastReader { 
+        BufferedReader br; 
+        StringTokenizer st; 
+  
+        public FastReader() 
+        { 
+            br = new BufferedReader( 
+                new InputStreamReader(System.in)); 
+        } 
+  
+        String next() 
+        { 
+            while (st == null || !st.hasMoreElements()) { 
+                try { 
+                    st = new StringTokenizer(br.readLine()); 
+                } 
+                catch (IOException e) { 
+                    e.printStackTrace(); 
+                } 
+            } 
+            return st.nextToken(); 
+        } 
+  
+        int nextInt() { return Integer.parseInt(next()); } 
+  
+        long nextLong() { return Long.parseLong(next()); } 
+  
+        double nextDouble() 
+        { 
+            return Double.parseDouble(next()); 
+        } 
+  
+        String nextLine() 
+        { 
+            String str = ""; 
+            try { 
+                if(st.hasMoreTokens()){ 
+                    str = st.nextToken("\n"); 
+                } 
+                else{ 
+                    str = br.readLine(); 
+                } 
+            } 
+            catch (IOException e) { 
+                e.printStackTrace(); 
+            } 
+            return str; 
+        } 
+    } 
+  
+    private static char[] S;
+    private static int[] op;
+    private static char[][] query;
+    public static void main(String[] args) {
+        op = new int[1000005];
+        query = new char[1000005][];
+        FastReader scanner = new FastReader();
+        int q = scanner.nextInt();
+        S = new char[1000005];
+        int sz = 0, opsz = 0;
+        for (int _q = 1; _q <= q; _q++) {
+            int type = scanner.nextInt();
+            if (type == 1) {
+                String tmp = scanner.next();
+                query[_q] = new char[tmp.length()];
+                op[opsz++] = _q;
+                for (int i = 0; i < tmp.length(); i++) {
+                    S[sz++] = tmp.charAt(i);
+                    query[_q][i] = S[sz - 1];
+                }
+            } else if (type == 2) {
+                op[opsz++] = -_q;
+                int k = scanner.nextInt();
+                query[_q] = new char[k];
+                for (int i = k - 1; i >= 0; i--) {
+                    query[_q][i] = S[--sz];
+                }
+            } else if (type == 3) {
+                int k = scanner.nextInt();
+                System.out.println(S[k - 1]);
+            } else {
+                if (opsz > 0) {
+                    int cur = op[--opsz];
+                    if (cur > 0) {
+                        sz -= query[cur].length;
+                    } else {
+                        for (int i = 0; i < query[-cur].length; i++) {
+                            S[sz++] = query[-cur][i];
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

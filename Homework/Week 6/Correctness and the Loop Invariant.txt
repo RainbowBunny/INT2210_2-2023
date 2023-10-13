@@ -1,0 +1,1 @@
+Sai o cho j trong vong while phai >= 0 neu khong thi minh bo qua phan tu dau tien.
