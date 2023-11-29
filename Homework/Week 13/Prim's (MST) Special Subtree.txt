@@ -1,0 +1,103 @@
+// java 7
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Result {
+
+    /*
+     * Complete the 'prims' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts following parameters:
+     *  1. INTEGER n
+     *  2. 2D_INTEGER_ARRAY edges
+     *  3. INTEGER start
+     */
+    public static boolean[] vis = new boolean[3005];
+    public static int[] distance = new int[3005];
+    public static int[][] adj = new int[3005][3005];
+
+    public static int prims(int n, List<List<Integer>> edges, int start) {
+        for (int i = 1; i <= n; i++) {
+            distance[i] = 1000000000;
+        }
+        distance[start] = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                adj[i][j] = 1000000000;
+            }
+        }
+        
+        for (List<Integer> edge : edges) {
+            int u = edge.get(0);
+            int v = edge.get(1);
+            int w = edge.get(2);
+            adj[u][v] = Math.min(adj[u][v], w);
+            adj[v][u] = Math.min(adj[v][u], w);
+        }
+        int ans = 0;
+
+        for (int i = 1; i <= n; i++) {
+            int bestNode = 0, bestDistance = 1000000000;
+            for (int j = 1; j <= n; j++) {
+                if (vis[j]) {
+                    continue;
+                }
+                if (bestDistance > distance[j]) {
+                    bestDistance = distance[j];
+                    bestNode = j;
+                }
+            }
+            vis[bestNode] = true;
+            ans += bestDistance;
+            for (int j = 1; j <= n; j++) {
+                distance[j] = Math.min(distance[j], adj[bestNode][j]);
+            }
+        }
+        return ans;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int n = Integer.parseInt(firstMultipleInput[0]);
+
+        int m = Integer.parseInt(firstMultipleInput[1]);
+
+        List<List<Integer>> edges = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            String[] edgesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> edgesRowItems = new ArrayList<>();
+
+            for (int j = 0; j < 3; j++) {
+                int edgesItem = Integer.parseInt(edgesRowTempItems[j]);
+                edgesRowItems.add(edgesItem);
+            }
+
+            edges.add(edgesRowItems);
+        }
+
+        int start = Integer.parseInt(bufferedReader.readLine().trim());
+
+        int result = Result.prims(n, edges, start);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}

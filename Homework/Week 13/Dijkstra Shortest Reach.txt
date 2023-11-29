@@ -1,0 +1,149 @@
+// java 15
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Pair implements Comparable<Pair> {
+    private Integer first;
+    private Integer second;
+    public Pair(Integer first, Integer second) {
+        this.first = first;
+        this.second = second;
+    }
+    
+    public Integer getFirst() {
+        return first;
+    }
+    
+    public Integer getSecond() {
+        return second;
+    }
+    
+    public int compareTo(Pair other) {
+        int compare = first.compareTo(other.first);
+        if (compare != 0) {
+            return compare; 
+        }
+        return second.compareTo(other.second);
+    } 
+}
+
+class Result {
+
+    /*
+     * Complete the 'shortestReach' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts following parameters:
+     *  1. INTEGER n
+     *  2. 2D_INTEGER_ARRAY edges
+     *  3. INTEGER s
+     */
+    public static int[] distance = new int[3005];
+    public static int[][] adj = new int[3005][3005];
+    public static boolean[] marked = new boolean[3005];
+
+    public static List<Integer> shortestReach(int n, List<List<Integer>> edges, int s) {
+        for (int i = 1; i <= n; i++) {
+            distance[i] = 1000000000;
+            marked[i] = false;
+        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                adj[i][j] = 1000000000;
+            }
+        }
+        distance[s] = 0;
+        for (List<Integer> edge : edges) {
+            int u = edge.get(0);
+            int v = edge.get(1);
+            int w = edge.get(2);
+            adj[u][v] = Math.min(adj[u][v], w);
+            adj[v][u] = Math.min(adj[v][u], w);
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            int u = 0, d = 1000000000;
+            for (int j = 1; j <= n; j++) {
+                if (marked[j]) {
+                    continue;
+                }
+                if (d > distance[j]) {
+                    u = j;
+                    d = distance[j];
+                }
+            }
+            for (int v = 1; v <= n; v++) {
+                if (distance[v] > d + adj[u][v]) {
+                    distance[v] = d + adj[u][v];
+                }
+            }
+            marked[u] = true;
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            if (i == s) {
+                continue;
+            }
+            if (distance[i] == 1000000000) {
+                distance[i] = -1;
+            }
+            ans.add(distance[i]);
+        }
+        return ans;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            int n = Integer.parseInt(firstMultipleInput[0]);
+
+            int m = Integer.parseInt(firstMultipleInput[1]);
+
+            List<List<Integer>> edges = new ArrayList<>();
+
+            for (int i = 0; i < m; i++) {
+                String[] edgesRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+                List<Integer> edgesRowItems = new ArrayList<>();
+
+                for (int j = 0; j < 3; j++) {
+                    int edgesItem = Integer.parseInt(edgesRowTempItems[j]);
+                    edgesRowItems.add(edgesItem);
+                }
+
+                edges.add(edgesRowItems);
+            }
+
+            int s = Integer.parseInt(bufferedReader.readLine().trim());
+
+            List<Integer> result = Result.shortestReach(n, edges, s);
+
+            for (int i = 0; i < result.size(); i++) {
+                bufferedWriter.write(String.valueOf(result.get(i)));
+
+                if (i != result.size() - 1) {
+                    bufferedWriter.write(" ");
+                }
+            }
+
+            bufferedWriter.newLine();
+        }
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}

@@ -1,0 +1,114 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Pair implements Comparable<Pair> {
+    private Integer first;
+    private Integer second;
+    public Pair(Integer first, Integer second) {
+        this.first = first;
+        this.second = second;
+    }
+    
+    public Integer getFirst() {
+        return first;
+    }
+    
+    public Integer getSecond() {
+        return second;
+    }
+    
+    public int compareTo(Pair other) {
+        int compare = first.compareTo(other.first);
+        if (compare != 0) {
+            return compare; 
+        }
+        return second.compareTo(other.second);
+    } 
+}
+
+class Result {
+
+    /*
+     * Complete the 'connectedCell' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts 2D_INTEGER_ARRAY matrix as parameter.
+     */
+     
+    public static boolean[][] visited = new boolean[15][15];
+    public static Integer[] dx = new Integer[]{1, 0, -1, 0, -1, -1, 1, 1};
+    public static Integer[] dy = new Integer[]{0, 1, 0, -1, -1, 1, 1, -1};
+
+    public static int connectedCell(List<List<Integer>> matrix) {
+    // Write your code here
+        int ans = 0;
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix.get(i).size(); j++) {
+                if (visited[i][j] || matrix.get(i).get(j) == 0) {
+                    continue;
+                }
+                int cc = 1;
+                Queue <Pair> q = new LinkedList<>();
+                visited[i][j] = true;
+                q.add(new Pair(i, j));
+                while (!q.isEmpty()) {
+                    Pair tmp = q.poll();
+                    int x = tmp.getFirst();
+                    int y = tmp.getSecond();
+                    for (int k = 0; k < 8; k++) {
+                        if (x + dx[k] < 0 || x + dx[k] >= matrix.size() || y + dy[k] < 0 || y + dy[k] >= matrix.get(i).size()) {
+                            continue;
+                        }
+                        if (!visited[x + dx[k]][y + dy[k]] && matrix.get(x + dx[k]).get(y + dy[k]) == 1) {
+                            cc++;
+                            visited[x + dx[k]][y + dy[k]] = true;
+                            q.add(new Pair(x + dx[k], y + dy[k]));
+                        }
+                    }
+                }
+                ans = Math.max(ans, cc);
+            }
+        }
+        return ans;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        int m = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String[] matrixRowTempItems = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> matrixRowItems = new ArrayList<>();
+
+            for (int j = 0; j < m; j++) {
+                int matrixItem = Integer.parseInt(matrixRowTempItems[j]);
+                matrixRowItems.add(matrixItem);
+            }
+
+            matrix.add(matrixRowItems);
+        }
+
+        int result = Result.connectedCell(matrix);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}

@@ -1,0 +1,123 @@
+// java 7
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Pair implements Comparable<Pair> {
+    private Integer first;
+    private Integer second;
+    public Pair(Integer first, Integer second) {
+        this.first = first;
+        this.second = second;
+    }
+    
+    public Integer getFirst() {
+        return first;
+    }
+    
+    public Integer getSecond() {
+        return second;
+    }
+    
+    public int compareTo(Pair other) {
+        int compare = first.compareTo(other.first);
+        if (compare != 0) {
+            return compare; 
+        }
+        return second.compareTo(other.second);
+    } 
+}
+
+class Result {
+
+    /*
+     * Complete the 'kruskals' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts WEIGHTED_INTEGER_GRAPH g as parameter.
+     */
+
+    /*
+     * For the weighted graph, <name>:
+     *
+     * 1. The number of nodes is <name>Nodes.
+     * 2. The number of edges is <name>Edges.
+     * 3. An edge exists between <name>From[i] and <name>To[i]. The weight of the edge is <name>Weight[i].
+     *
+     */
+    public static int[] dsu = new int[3005];
+    
+    public static int root(int node) {
+        if (dsu[node] == node) {
+            return node;
+        }
+        return root(dsu[node]);
+    }
+
+    public static int kruskals(int gNodes, List<Integer> gFrom, List<Integer> gTo, List<Integer> gWeight) {
+        List<List<Pair> > edges = new ArrayList<>();
+        for (int i = 0; i <= 100000; i++) {
+            List<Pair> tmp = new ArrayList<>();
+            edges.add(tmp);
+        }
+        for (int i = 1; i <= gNodes; i++) {
+            dsu[i] = i;
+        }
+        for (int i = 0; i < gWeight.size(); i++) {
+            edges.get(gWeight.get(i)).add(new Pair(gFrom.get(i), gTo.get(i)));
+        }
+        int edgeCount = 0;
+        int ans = 0;
+        for (int i = 0; i <= 100000; i++) {
+            for (Pair edge : edges.get(i)) {
+                int u = root(edge.getFirst());
+                int v = root(edge.getSecond());
+                if (u != v) {
+                    edgeCount++;
+                    ans += i;
+                    dsu[u] = v;
+                    if (edgeCount == gNodes - 1) {
+                        return ans;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] gNodesEdges = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int gNodes = Integer.parseInt(gNodesEdges[0]);
+        int gEdges = Integer.parseInt(gNodesEdges[1]);
+
+        List<Integer> gFrom = new ArrayList<>();
+        List<Integer> gTo = new ArrayList<>();
+        List<Integer> gWeight = new ArrayList<>();
+
+        for (int i = 0; i < gEdges; i++) {
+            String[] gFromToWeight = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            gFrom.add(Integer.parseInt(gFromToWeight[0]));
+            gTo.add(Integer.parseInt(gFromToWeight[1]));
+            gWeight.add(Integer.parseInt(gFromToWeight[2]));
+        }
+
+        int res = Result.kruskals(gNodes, gFrom, gTo, gWeight);
+
+        bufferedWriter.write(String.valueOf(res));
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
