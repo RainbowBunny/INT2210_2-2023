@@ -1,0 +1,29 @@
+// Java 7
+
+	/*
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+
+    public static boolean isLCA(int l, int r, int v1, int v2) {
+        return l <= v1 && v1 <= r && l <= v2 && v2 <= r;
+    }
+    
+    public static Node findLCA(Node node, int l, int r, int v1, int v2) {
+        if (isLCA(l, node.data - 1, v1, v2)) {
+            return findLCA(node.left, l, node.data - 1, v1, v2);
+        }
+        
+        if (isLCA(node.data + 1, r, v1, v2)) {
+            return findLCA(node.right, node.data + 1, r, v1, v2);
+        }
+        
+        return node;
+    }
+    
+	public static Node lca(Node root, int v1, int v2) {
+        return findLCA(root, -1000000000, 1000000000, v1, v2);
+    }
+

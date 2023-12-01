@@ -1,0 +1,19 @@
+// Java 7
+
+	/*
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+	public static int height(Node root) {
+      	int l = -1, r = -1;
+        if (root.left != null) {
+            l = height(root.left);
+        }
+        if (root.right != null) {
+            r = height(root.right);
+        }
+        return Math.max(l, r) + 1;
+    }
+

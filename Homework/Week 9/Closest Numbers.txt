@@ -1,0 +1,98 @@
+// Java 7
+import java.io.*;
+import java.util.*;
+
+class Result {
+
+    /*
+     * Complete the 'closestNumbers' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts INTEGER_ARRAY arr as parameter.
+     */
+    static int[] index = new int[200005];
+    static int[] tmp = new int[200005];
+
+    public static void merge(List<Integer> arr, int l1, int r1, int l2, int r2) {
+        int pt1 = l1;
+        int pt2 = l2;
+        int cnt = 0;
+        while (pt1 != r1 + 1 && pt2 != r2 + 1) {
+            if (arr.get(index[pt1]) < arr.get(index[pt2])) {
+                tmp[cnt++] = index[pt1++];
+            } else {
+                tmp[cnt++] = index[pt2++];
+            }
+        }
+
+        while (pt1 != r1 + 1) {
+            tmp[cnt++] = index[pt1++];
+        }
+
+        while (pt2 != r2 + 1) {
+            tmp[cnt++] = index[pt2++];
+        }
+        for (int i = l1; i <= r2; i++) {
+            index[i] = tmp[i - l1];
+        }
+    }
+
+    public static void mergeSort(List<Integer> arr, int l, int r) {
+        if (l == r) {
+            return;
+        }
+        int mid = (l + r) >> 1;
+        mergeSort(arr, l, mid);
+        mergeSort(arr, mid + 1, r);
+        merge(arr, l, mid, mid + 1, r);
+
+    }
+
+    public static List<Integer> closestNumbers(List<Integer> arr) {
+        // Write your code here
+        for (int i = 0; i < arr.size(); i++) {
+            index[i] = i;
+        }
+        mergeSort(arr, 0, arr.size() - 1);
+        int aa = 1000000000;
+        for (int i = 0; i + 1 < arr.size(); i++) {
+            aa = Math.min(aa, arr.get(index[i + 1]) - arr.get(index[i]));
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i + 1 < arr.size(); i++) {
+            if (arr.get(index[i + 1]) - arr.get(index[i]) == aa) {
+                ans.add(arr.get(index[i]));
+                ans.add(arr.get(index[i + 1]));
+            }
+        }
+        return ans;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        String[] arrTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        List<Integer> arr = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int arrItem = Integer.parseInt(arrTemp[i]);
+            arr.add(arrItem);
+        }
+
+        List<Integer> result = Result.closestNumbers(arr);
+
+        for (int i = 0; i < result.size(); i++) {
+            System.out.print(String.valueOf(result.get(i)));
+
+            if (i != result.size() - 1) {
+                System.out.print(" ");
+            }
+        }
+    }
+}
