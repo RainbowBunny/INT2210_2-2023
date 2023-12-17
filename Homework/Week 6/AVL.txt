@@ -1,0 +1,82 @@
+	/* Class node is defined as :
+    class Node 
+    	int val;	//Value
+    	int ht;		//Height
+    	Node left;	//Left child
+    	Node right;	//Right child
+
+	*/
+
+    
+
+    static int getHeight(Node node) {
+        if (node == null) {
+            return -1;
+        }
+        return node.ht;
+    }
+
+    static void updateHeight(Node x) {
+        if (x == null) {
+            return;
+        }
+        x.ht = 1 + Math.max(getHeight(x.left), getHeight(x.right));
+    }
+
+    static int getBalanceFactor(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return getHeight(node.left) - getHeight(node.right);
+    }
+
+    static Node rotateRight(Node x) {
+        Node y = x.left;
+        x.left = y.right;
+        y.right = x;
+        updateHeight(x);
+        updateHeight(y);
+        return y;
+    }
+
+    static Node rotateLeft(Node x) {
+        Node y = x.right;
+        x.right = y.left;
+        y.left = x;
+        updateHeight(x);
+        updateHeight(y);
+        return y;
+    }
+
+    static Node balance(Node root) {
+        if (getBalanceFactor(root) < -1) {
+            if (getBalanceFactor(root.right) > 0) {
+                root.right = rotateRight(root.right);
+            }
+            root = rotateLeft(root);
+        } else if (getBalanceFactor(root) > 1) {
+            if (getBalanceFactor(root.left) < 0) {
+                root.left = rotateLeft(root.left);
+            }
+            root = rotateRight(root);
+        }
+        updateHeight(root);
+        return root;
+    }
+
+	static Node insert(Node root, int val)
+    {
+        if (root == null) {
+            Node tmp = new Node();
+            tmp.val = val;
+            tmp.ht = 0;
+            return tmp;
+        }
+        
+    	if (root.val > val) {
+            root.left = insert(root.left, val);
+        } else {
+            root.right = insert(root.right, val);
+        }
+        return balance(root);
+    }

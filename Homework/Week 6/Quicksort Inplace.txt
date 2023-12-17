@@ -1,0 +1,48 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    public static int n;
+    public static int[] arr = new int[5005];
+
+    public static void swap(int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+    
+    public static void sort(int l, int r) {
+        if (l + 1 >= r) {
+            return;
+        }
+        int pivot = arr[r - 1];
+        int i = l;
+        for (int j = l; j < r; j++) {
+            if (arr[j] < pivot) {
+                swap(i, j);
+            }
+            if (arr[i] < pivot) {
+                i++;
+            }
+        }
+        swap(i, r - 1);
+        for (int ii = 0; ii < n; ii++) {
+            System.out.print(arr[ii] + " ");
+        }
+        System.out.println();
+        sort(l, i);
+        sort(i + 1, r);
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        sort(0, n);
+    }
+}
